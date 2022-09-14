@@ -1,0 +1,29 @@
+Function %_FUNCTION_%(ByVal %_TEXT_% As String, ByVal %_KEY_% As String) As String
+    Dim %_VAR_BTEXT_%() As Byte
+    Dim %_VAR_BKEY_%() As Byte
+    Dim %_VAR_TEXTPOS_% As Long
+    Dim %_VAR_KEYPOS_% As Long
+    Dim %_VAR_B64_%
+
+    With CreateObject("Microsoft.XMLDOM").createElement("b64")
+        .DataType = "bin.base64": .text = %_TEXT_%
+        %_VAR_B64_% = .nodeTypedValue
+        With CreateObject("ADODB.Stream")
+            .Open: .Type = 1: .Write %_VAR_B64_%: .Position = 0: .Type = 2: .Charset = "utf-8"
+            %_TEXT_% = .ReadText
+            .Close
+        End With
+    End With
+    
+    %_VAR_BTEXT_% = StrConv(%_TEXT_%, vbFromUnicode)
+    %_VAR_BKEY_% = StrConv(%_KEY_%, vbFromUnicode)
+    For %_VAR_TEXTPOS_% = 0 To UBound(%_VAR_BTEXT_%)
+        %_VAR_BTEXT_%(%_VAR_TEXTPOS_%) = %_VAR_BTEXT_%(%_VAR_TEXTPOS_%) Xor %_VAR_BKEY_%(%_VAR_KEYPOS_%)
+    If %_VAR_KEYPOS_% < UBound(%_VAR_BKEY_%) Then
+        %_VAR_KEYPOS_% = %_VAR_KEYPOS_% + 1
+    Else
+        %_VAR_KEYPOS_% = 0
+    End If
+    Next %_VAR_TEXTPOS_%
+    %_FUNCTION_% = StrConv(%_VAR_BTEXT_%, vbUnicode)
+End Function

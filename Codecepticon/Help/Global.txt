@@ -1,0 +1,7 @@
+%%_HEADER_%%
+
+Usage:
+    Codecepticon.exe --module [csharp|powershell|vba] --help [OPTIONS]...
+    Codecepticon.exe --config [XML Config File]
+    
+Tip: Use the command line generator HTML file to make your life easier.

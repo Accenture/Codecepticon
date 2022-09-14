@@ -1,0 +1,2 @@
+Codecepticon v%%_VERSION_%% [ Accenture Security ]
+- For more information visit https://github.com/Accenture/Codecepticon

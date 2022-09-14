@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Codecepticon": {
+      "commandName": "Project",
+      "commandLineArgs": "--config C:\\data\\tmp\\sharphound.xml"
+    }
+  }
+}

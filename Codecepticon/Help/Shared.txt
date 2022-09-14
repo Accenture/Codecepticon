@@ -1,0 +1,43 @@
+--rename-method [opt]           Specify which renaming method to utilise, from below:
+                                - random    Generate random character combinations from a given character set.
+                                - notwins   Prevent the same character from appearing consequently.
+                                - dict      Generate combinations based on a user-defined dictionary.
+                                - markov    Generate "English-sounding" random words using Markov chains.
+--rename-charset [set]          Speficy the charset that will be used to generate obfuscated data. Works with
+                                rename method [random|notwins].
+--rename-length [len]           Specify the length of the generated obfuscated data.
+--rename-dictionary-file [path] Path to the dictionary file to be used with the [dict] rename method. Each line
+                                must contain a word, no special characters allowed other than an underscore.
+--rename-dictionary [w1,w2,wN]  Specify a comma-separated dictionary wordlist to be used with the [dict] rename
+                                method.
+--markov-min-length [len]	Only used with 'markov' as the --rename-method. Specifies the min/max length a
+--markov-max-length [len]	generated word will have. Default values are 3 and 9.
+--markov-min-words [count]	Only used with 'markov' as the --rename-method. When random words are generated
+--markov-max-words [count]	they are also concatenated to increase the size of the output variable/name/
+				This behaviour is similar to the 'dict' rename method.
+
+--string-rewrite                Enable string rewriting.
+--string-rewrite-method [opt]   Specify how to rewrite strings, from below:
+                                - b64       Encode all strings using Base64.
+                                - xor       Encrypt all data using XOR and randomly generated keys.
+                                - group     Replace each character with a group combination of multiple
+                                            characters. For instance, "a" => "qwer", "b" => "mnbv", etc.
+                                - single    A basic substitution cipher.
+                                - external  Encode all strings using Base64 and export them to a file. Upon
+                                            execution, all strings will be loaded into memory.
+--string-rewrite-charset [set]  Specify the charset that will be used  to generate group character combinations.
+                                Used only with --string-rewrite-method group.
+--string-rewrite-length [len]   Specify the length of each generated group.
+--string-rewrite-extfile [path] Specify the path where the  strings will be encoded and exported to. Used only
+                                with --string-rewrite-method external.
+
+--map-file [path]               Specify the path where the mapping HTML file will be written to. If no file is
+                                specified, then a ".html" file be created in the solution's directory.
+
+--unmap-directory [path]        Specify the directory where the obfuscated output files are located.
+                                Only works with --action unmap.
+--unmap-recursive               Parse all files under --unmap-directory recursively.
+                                Only works with --action unmap.
+--unmap-file [path]             Specify an obfuscated file to unmap. Only works with --action unmap.
+
+--verbose                       What it says.

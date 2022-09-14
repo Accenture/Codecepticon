@@ -1,0 +1,17 @@
+Function %_FUNCTION_%(ByVal %_TEXT_% As String)
+    Dim %_MAPPING_VAR_%
+    Dim %_VAR_I_%       As Long
+    Dim %_VAR_OUTPUT_%  As String
+    dim %_VAR_ITEMS_%
+    
+    Set %_MAPPING_VAR_% = CreateObject("Scripting.Dictionary")
+    
+    %MAPPING%
+    
+    %_VAR_ITEMS_% = %_MAPPING_VAR_%.Keys
+    
+    For %_VAR_I_% = 1 To Len(%_TEXT_%) Step Len(%_VAR_ITEMS_%(0))
+        %_VAR_OUTPUT_% = %_VAR_OUTPUT_% & Chr(%_MAPPING_VAR_%(Mid(%_TEXT_%, %_VAR_I_%, Len(%_VAR_ITEMS_%(0)))))
+    Next %_VAR_I_%
+    %_FUNCTION_% = %_VAR_OUTPUT_%
+End Function

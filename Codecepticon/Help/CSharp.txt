@@ -1,0 +1,28 @@
+%%_HEADER_%%
+
+Usage: Codecepticon.exe --module [csharp|cs] [OPTIONS]...
+
+--action [obfuscate|unmap]      Specify the action to be executed, whether to obfuscate a solution or unmap output
+                                files back to readable data.
+--path [solution]               Location of the *.sln project to be obfuscated.
+--build                         Whether to build the project upon completion.
+--build-path [path]             Path to a directory where the solution will be compiled to. Only works with --build.
+--profile [name]                Name of an application-specific profile to use. Supported profiles are:
+                                - rubeus
+                                - seatbelt
+                                - sharphound
+                                - sharpview
+
+--rename [all|..custom..]       Specify what requires obfuscation, from below:
+                                - all   Will obfuscate everything.
+                                - n     Namespaces
+                                - c     Classes
+                                - e     Enums
+                                - f     Functions
+                                - p     Properties
+                                - a     Parameters
+                                - v     Variables
+                                - o     Command Line
+%%_SHARED_%%
+
+Good luck.

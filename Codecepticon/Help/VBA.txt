@@ -1,0 +1,14 @@
+%%_HEADER_%%
+
+Usage: Codecepticon.exe --module [vb6|vba] [OPTIONS]...
+
+--action [obfuscate|unmap]      Specify the action to be executed, whether to obfuscate a solution or unmap output
+                                files back to readable data.
+--path [module]                 Location of the *.bas file to be obfuscated.
+
+--rename [all|..custom..]       Specify what requires obfuscation, from below:
+                                - all   Will obfuscate everything.
+                                - i     Identifiers
+%%_SHARED_%%
+
+Good luck.

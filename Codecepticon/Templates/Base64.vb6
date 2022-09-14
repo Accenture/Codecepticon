@@ -1,0 +1,12 @@
+Function %_FUNCTION_%(b64)
+    Dim b
+    With CreateObject("Microsoft.XMLDOM").createElement("b64")
+        .DataType = "bin.base64": .text = b64
+        b = .nodeTypedValue
+        With CreateObject("ADODB.Stream")
+            .Open: .Type = 1: .Write b: .Position = 0: .Type = 2: .Charset = "utf-8"
+            %_FUNCTION_% = .ReadText
+            .Close
+        End With
+    End With
+End Function

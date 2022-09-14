@@ -1,0 +1,16 @@
+%%_HEADER_%%
+
+Usage: Codecepticon.exe --module [powershell|ps] [OPTIONS]...
+
+--action [obfuscate|unmap]      Specify the action to be executed, whether to obfuscate a solution or unmap output
+                                files back to readable data.
+--path [script]                 Location of the *.ps1 file to be obfuscated.
+
+--rename [all|..custom..]       Specify what requires obfuscation, from below:
+                                - all   Will obfuscate everything.
+                                - f     Functions
+                                - v     Variables
+
+%%_SHARED_%%
+
+Good luck.

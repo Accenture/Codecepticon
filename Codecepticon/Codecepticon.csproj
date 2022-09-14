@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+	<LangVersion>9.0</LangVersion>
+	<PackageId>Codecepticon</PackageId>
+	<Title>Codecepticon</Title>
+	<Version>1.0.0</Version>
+	<Authors>Pavel Tsakalidis</Authors>
+	<Company>Accenture Security</Company>
+	<Product>Codecepticon</Product>
+	<Description>Offensive Security Code Obfuscator</Description>
+	<PackageProjectUrl>https://github.com/Accenture/Codecepticon</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dependencies\**" />
+    <Compile Remove="Help\**" />
+    <Compile Remove="Templates\**" />
+    <EmbeddedResource Remove="Dependencies\**" />
+    <EmbeddedResource Remove="Help\**" />
+    <EmbeddedResource Remove="Templates\**" />
+    <None Remove="Dependencies\**" />
+    <None Remove="Help\**" />
+    <None Remove="Templates\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.2" />
+    <PackageReference Include="Microsoft.Build" Version="17.3.1" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.5.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.9.0" />
+    <PackageReference Include="Microsoft.PowerShell.5.1.ReferenceAssemblies" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(ProjectDir)..\CommandLineGenerator.html&quot; &quot;$(ProjectDir)$(OutDir)CommandLineGenerator.html&quot;&#xD;&#xA;xcopy &quot;$(ProjectDir)Help&quot; &quot;$(ProjectDir)$(OutDir)Help&quot; /Y /I /E&#xD;&#xA;xcopy &quot;$(ProjectDir)Templates&quot; &quot;$(ProjectDir)$(OutDir)Templates&quot; /Y /I /E" />
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="rd /s /q &quot;$(TargetDir)&quot;" />
+  </Target>
+
+</Project>

@@ -1,0 +1,22 @@
+Function %_FUNCTION_%(ByVal %_INDEX_% As Long) As String
+    Dim %_VAR_BDATA_%()    As Byte
+    Dim %_VAR_DATA_%() As String
+    Dim %_VAR_B64_%
+    
+    Open "%MAPPING%" For Binary As #1
+        ReDim %_VAR_BDATA_%(LOF(1) - 1) As Byte
+        Get #1, , %_VAR_BDATA_%()
+    Close #1
+    
+    %_VAR_DATA_%() = Split(StrConv(%_VAR_BDATA_%(), vbUnicode), vbCrLf)
+    
+    With CreateObject("Microsoft.XMLDOM").createElement("b64")
+        .DataType = "bin.base64": .text = %_VAR_DATA_%(%_INDEX_%)
+        %_VAR_B64_% = .nodeTypedValue
+        With CreateObject("ADODB.Stream")
+            .Open: .Type = 1: .Write %_VAR_B64_%: .Position = 0: .Type = 2: .Charset = "utf-8"
+            %_FUNCTION_% = .ReadText
+            .Close
+        End With
+    End With
+End Function
