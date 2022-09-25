@@ -331,7 +331,7 @@ namespace Codecepticon.Modules.PowerShell
                 }
 
                 text = text.Replace(item, "{" + c++ + "}");
-                vars.Add(item);
+                vars.Add(item.Replace("{", "").Replace("}", ""));
             } while (true);
 
             // Extract $_ if it exists.
@@ -387,6 +387,14 @@ namespace Codecepticon.Modules.PowerShell
             string name = "";
             foreach (KeyValuePair<string, string> item in DataCollector.Mapping.Variables)
             {
+                // First search if the variable is in a ${variable} format.
+                if (text.ToLower().IndexOf($"{{{item.Key}}}") >= 0)
+                {
+                    name = $"${{{item.Key}}}";
+                    break;
+                }
+
+                // Now search for the variable in its $variable format
                 int p = text.ToLower().IndexOf("$" + item.Key);
                 if (p == -1)
                 {
