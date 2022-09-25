@@ -16,6 +16,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpHound
 {
     class SharpHound : BaseProfile
     {
+        public override string Name { get; } = "SharpHound";
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             Logger.Debug("SharpHound: Removing help text");

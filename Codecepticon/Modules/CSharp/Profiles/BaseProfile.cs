@@ -12,6 +12,8 @@ namespace Codecepticon.Modules.CSharp.Profiles
 {
     class BaseProfile
     {
+        public virtual string Name { get; } = "Not Set";
+
         public virtual async Task<Solution> Before(Solution solution, Project project)
         {
             Logger.Debug("Profile does not implement Before function");

@@ -14,6 +14,8 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpChrome
 {
     class SharpChrome : BaseProfile
     {
+        public override string Name { get; } = "SharpChrome";
+
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             if (CommandLineData.CSharp.Rename.CommandLine)

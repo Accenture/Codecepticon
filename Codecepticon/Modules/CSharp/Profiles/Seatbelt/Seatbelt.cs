@@ -13,6 +13,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.Seatbelt
 {
     class Seatbelt : BaseProfile
     {
+        public override string Name { get; } = "Seatbelt";
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             if (CommandLineData.CSharp.Rename.CommandLine)

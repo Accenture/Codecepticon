@@ -14,6 +14,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpDPAPI
 {
     class SharpDPAPI : BaseProfile
     {
+        public override string Name { get; } = "SharpDPAPI";
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             if (CommandLineData.CSharp.Rename.CommandLine)

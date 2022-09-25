@@ -16,6 +16,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.Certify
 {
     class Certify : BaseProfile
     {
+        public override string Name { get; } = "Certify";
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             if (CommandLineData.CSharp.Rename.CommandLine)

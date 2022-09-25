@@ -12,6 +12,8 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpView
 {
     class SharpView : BaseProfile
     {
+        public override string Name { get; } = "SharpView";
+
         public override async Task<Solution> Before(Solution solution, Project project)
         {
             if (CommandLineData.CSharp.Rename.CommandLine)
@@ -73,15 +75,10 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpView
 
         protected async Task<Solution> RewriteCommandLine(Solution solution, Project project)
         {
+            project = VisualStudioManager.GetProjectByName(solution, project.Name);
             Document csProgram = VisualStudioManager.GetDocumentByName(project, "Program.cs");
-            if (csProgram == null)
-            {
-                Logger.Error("SharpView Profile: Could not find Program.cs");
-                return solution;
-            }
 
             SyntaxNode syntaxRoot = await csProgram.GetSyntaxRootAsync();
-                
             MethodNames rewriterMethods = new MethodNames();
             SyntaxNode newSyntaxRoot = rewriterMethods.Visit(syntaxRoot);
 
@@ -94,6 +91,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpView
 
         protected async Task<Solution> RemoveHelpText(Solution solution, Project project)
         {
+            project = VisualStudioManager.GetProjectByName(solution, project.Name);
             Document csProgram = VisualStudioManager.GetDocumentByName(project, "Program.cs");
             if (csProgram == null)
             {

@@ -331,6 +331,7 @@ namespace Codecepticon.Modules.CSharp
 
             if (CommandLineData.CSharp.Profile != null)
             {
+                Logger.Info("Selected profile is: " + CommandLineData.CSharp.Profile.Name);
                 Logger.Info("Running profile-specific pre-process actions...", false);
                 solution = await CommandLineData.CSharp.Profile.Before(solution, project);
                 Logger.Info("", true, false);
