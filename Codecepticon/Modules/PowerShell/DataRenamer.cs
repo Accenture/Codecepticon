@@ -23,6 +23,7 @@ namespace Codecepticon.Modules.PowerShell
         {
             int padding = 0;
             int steps = psTokens.Length / 10;
+            if (steps == 0) { steps = 1; }
 
             for (int i = 0; i < psTokens.Length; i++)
             {
@@ -51,6 +52,7 @@ namespace Codecepticon.Modules.PowerShell
             // Extract special characters like `r and `n.
             int padding = 0;
             int steps = psTokens.Length / 10;
+            if (steps == 0) { steps = 1; }
 
             for (int i = 0; i < psTokens.Length; i++)
             {
@@ -78,6 +80,7 @@ namespace Codecepticon.Modules.PowerShell
         {
             int padding = 0;
             int steps = psTokens.Length / 10;
+            if (steps == 0) { steps = 1; }
             string replaceWith = "";
 
             for (int i = 0; i < psTokens.Length; i++)
