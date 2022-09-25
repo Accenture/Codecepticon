@@ -222,7 +222,7 @@ namespace Codecepticon.CommandLine
 
             CommandLineData.Global.RawCmdLineArgs = Args;
             CommandLineData.Global.RawConfigFile = "";
-            CommandLineData.Global.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            CommandLineData.Global.Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
         }
 
         protected virtual void SetRenameValue(bool value)
