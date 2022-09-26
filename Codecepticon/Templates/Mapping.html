@@ -18,15 +18,24 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Codecepticon Mapping File</a>
-            <div class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Search" id="search" autofocus>
-            </div>
         </div>
     </nav>
 
     <div class="container">
-        <div class="mt-5">&nbsp;</div>
-        <div class="mt-2">&nbsp;</div>
+        <div class="row mt-5">&nbsp;</div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <div class="mb-3">
+                    <input class="form-control" id="search" placeholder="Search" autofocus type="text">
+                </div>
+    
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="match-word">
+                    <label class="form-check-label" for="match-word">Match Exact Word</label>
+                </div>
+            </div>
+        </div>
 
         <div class="row mb-3">
             <div class="alert alert-info">Command Line: <span class="font-monospace small">%fullcommandline%</span></div>
@@ -161,7 +170,8 @@
                 if (v.length === 0) {
                     return;
                 }
-                
+
+                let matchWord = PageData.element('#match-word').checked;
 
                 let rows = PageData.elements('table tr');
                 for (let i = 0; i < rows.length; i++) {
@@ -173,7 +183,12 @@
                     let isFound = false;
                     for (let k = 0; k < columns.length; k++) {
                         let contents = columns[k].textContent || columns[k].innerText;
-                        if (contents.toLowerCase().indexOf(v) >= 0) {
+                        if (matchWord) {
+                            if (contents.toLowerCase() == v) {
+                                isFound = true;
+                                break;
+                            }
+                        } else if (contents.toLowerCase().indexOf(v) >= 0) {
                             isFound = true;
                             break;
                         }
@@ -187,7 +202,7 @@
 
             __bindElements: function() {
                 //https://stackoverflow.com/a/33982079
-                [...PageData.elements('#search')].forEach(element => {
+                [...PageData.elements('#search, #match-word')].forEach(element => {
                     element.addEventListener('change', CodecepticonMapping.search, false);
                     element.addEventListener('keyup', CodecepticonMapping.search, false);
                 });
