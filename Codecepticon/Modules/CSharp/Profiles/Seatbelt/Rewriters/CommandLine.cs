@@ -13,6 +13,12 @@ namespace Codecepticon.Modules.CSharp.Profiles.Seatbelt.Rewriters
     {
         protected SyntaxTreeHelper Helper = new SyntaxTreeHelper();
 
+        protected List<string> SeatbeltArgumentParsers = new List<string>
+        {
+            "ParseAndRemoveSwitchArgument",
+            "ParseAndRemoveKeyValueArgument"
+        };
+
         public override SyntaxNode VisitLiteralExpression(LiteralExpressionSyntax node)
         {
             string text = node.GetFirstToken().ValueText.Trim();
@@ -20,9 +26,23 @@ namespace Codecepticon.Modules.CSharp.Profiles.Seatbelt.Rewriters
             {
                 if (Helper.GetClassBaseList(node) == "CommandBase")
                 {
-                    return Helper.RewriteCommandLineArg(node, text, false);
+                    return Helper.RewriteCommandLineArg(node, text, "");
                 }
             }
+
+            /*
+             * This will parse the following:
+             *      var commandGroups = ParseAndRemoveKeyValueArgument("-Group");
+             */
+            if (text.Length > 0 && text.StartsWith("-"))
+            {
+                string functionName = Helper.GetCallingFunctionNameFromArgument(node);
+                if (functionName.Length > 0 && SeatbeltArgumentParsers.Contains(functionName))
+                {
+                    return Helper.RewriteCommandLineArg(node, text, "-");
+                }
+            }
+            
             return base.VisitLiteralExpression(node);
         }
     }

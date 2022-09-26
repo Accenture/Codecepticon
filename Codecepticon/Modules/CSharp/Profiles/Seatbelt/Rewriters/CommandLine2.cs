@@ -7,25 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codecepticon.Modules.CSharp.Profiles.Certify.Rewriters
+namespace Codecepticon.Modules.CSharp.Profiles.Seatbelt.Rewriters
 {
-    class CommandLine : CSharpSyntaxRewriter
+    class CommandLine2 : CSharpSyntaxRewriter
     {
-        protected SyntaxTreeHelper Helper = new SyntaxTreeHelper();
-
         public override SyntaxNode VisitLiteralExpression(LiteralExpressionSyntax node)
         {
             string text = node.GetFirstToken().ValueText.Trim();
-            if (text.Length > 0 && text[0] == '/')
+            if (text == "all")
             {
-                return Helper.RewriteCommandLineArg(node, text, "/");
+                return SyntaxFactory.ParseExpression($"\"{DataCollector.Mapping.Enums["All"].ToLower()}\"");
             }
-
-            if (Helper.GetPropertyDeclaration(node) == "CommandName")
-            {
-                return Helper.RewriteCommandLineArg(node, text, "");
-            }
-
             return base.VisitLiteralExpression(node);
         }
     }

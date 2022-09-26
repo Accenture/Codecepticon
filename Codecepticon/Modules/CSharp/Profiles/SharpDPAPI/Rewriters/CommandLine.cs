@@ -18,12 +18,12 @@ namespace Codecepticon.Modules.CSharp.Profiles.SharpDPAPI.Rewriters
             string text = node.GetFirstToken().ValueText.Trim();
             if (text.Length > 0 && text[0] == '/')
             {
-                return Helper.RewriteCommandLineArg(node, text, true);
+                return Helper.RewriteCommandLineArg(node, text, "/");
             }
 
             if (Helper.GetPropertyDeclaration(node) == "CommandName")
             {
-                return Helper.RewriteCommandLineArg(node, text, false);
+                return Helper.RewriteCommandLineArg(node, text, "");
             }
 
             return base.VisitLiteralExpression(node);

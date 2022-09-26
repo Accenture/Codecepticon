@@ -438,7 +438,7 @@ namespace Codecepticon.Modules.CSharp
             return variable;
         }
 
-        public SyntaxNode RewriteCommandLineArg(SyntaxNode node, string text, bool hasSlash)
+        public SyntaxNode RewriteCommandLineArg(SyntaxNode node, string text, string prepend)
         {
             if (!DataCollector.Mapping.CommandLine.ContainsKey(text))
             {
@@ -448,9 +448,9 @@ namespace Codecepticon.Modules.CSharp
                     NewName = CommandLineData.Global.NameGenerator.Generate().ToLower()
                 };
 
-                if (hasSlash)
+                if (prepend.Length > 0)
                 {
-                    data.NewName = "/" + data.NewName;
+                    data.NewName = prepend + data.NewName;
                 }
                 DataCollector.Mapping.CommandLine.Add(text, data);
             }
@@ -694,6 +694,28 @@ namespace Codecepticon.Modules.CSharp
             }
 
             return methodName;
+        }
+
+        public string GetCallingFunctionNameFromArgument(SyntaxNode node)
+        {
+            if (!node.Parent.IsKind(SyntaxKind.Argument))
+            {
+                return "";
+            }
+
+            SyntaxNode invocationNode = FindParentOfType(node, SyntaxKind.InvocationExpression);
+            if (invocationNode == null)
+            {
+                return "";
+            }
+
+            SyntaxNode identifier = FindChildOfType(invocationNode, SyntaxKind.IdentifierName);
+            if (identifier == null)
+            {
+                return "";
+            }
+
+            return identifier.GetText().ToString();
         }
     }
 }

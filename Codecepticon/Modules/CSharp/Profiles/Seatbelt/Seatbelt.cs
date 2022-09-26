@@ -32,18 +32,30 @@ namespace Codecepticon.Modules.CSharp.Profiles.Seatbelt
             Rewriters.CommandLine rewriteCommandLine = new Rewriters.CommandLine();
 
             project = VisualStudioManager.GetProjectByName(solution, project.Name);
+            SyntaxNode syntaxRoot;
             foreach (Document document in project.Documents)
             {
-                SyntaxNode syntaxRoot = await document.GetSyntaxRootAsync();
+                syntaxRoot = await document.GetSyntaxRootAsync();
 
                 FileInfo file = new FileInfo(document.FilePath);
                 if (file.DirectoryName.IndexOf(@"\Commands\") >= 0)
                 {
                     syntaxRoot = rewriteCommandLine.Visit(syntaxRoot);
                 }
+                else if (file.Name == "SeatbeltArgumentParser.cs")
+                {
+                    syntaxRoot = rewriteCommandLine.Visit(syntaxRoot);
+                }
 
                 solution = solution.WithDocumentSyntaxRoot(document.Id, syntaxRoot);
             }
+
+            // Now we need to update the final references to the "all" command argument.
+            Document csRuntime = VisualStudioManager.GetDocumentByName(project, "Runtime.cs");
+            syntaxRoot = await csRuntime.GetSyntaxRootAsync();
+            CommandLine2 rewriteCommandLine2 = new CommandLine2();
+            syntaxRoot = rewriteCommandLine2.Visit(syntaxRoot);
+            solution = solution.WithDocumentSyntaxRoot(csRuntime.Id, syntaxRoot);
 
             return solution;
         }

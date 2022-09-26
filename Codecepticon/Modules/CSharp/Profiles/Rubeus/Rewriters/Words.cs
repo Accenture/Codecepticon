@@ -18,7 +18,7 @@ namespace Codecepticon.Modules.CSharp.Profiles.Rubeus.Rewriters
         public override SyntaxNode VisitLiteralExpression(LiteralExpressionSyntax node)
         {
             string text = node.GetFirstToken().ValueText.Trim();
-            return RewriteWords.Contains(text) ? Helper.RewriteCommandLineArg(node, text, false) : base.VisitLiteralExpression(node);
+            return RewriteWords.Contains(text) ? Helper.RewriteCommandLineArg(node, text, "") : base.VisitLiteralExpression(node);
         }
     }
 }
