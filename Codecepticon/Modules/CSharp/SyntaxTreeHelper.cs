@@ -215,6 +215,10 @@ namespace Codecepticon.Modules.CSharp
             {
                 node = ((IEnumerable<ClassDeclarationSyntax>)nodes).FirstOrDefault(s => s.Identifier.ToString() == existingName);
             }
+            else if (typeof(T) == typeof(DelegateDeclarationSyntax))
+            {
+                node = ((IEnumerable<DelegateDeclarationSyntax>)nodes).FirstOrDefault(s => s.Identifier.ToString() == existingName);
+            }
             else if (typeof(T) == typeof(MethodDeclarationSyntax))
             {
                 node = ((IEnumerable<MethodDeclarationSyntax>)nodes).FirstOrDefault(s => s.Identifier.ToString() == existingName);

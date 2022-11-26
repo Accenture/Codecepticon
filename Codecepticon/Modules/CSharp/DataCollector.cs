@@ -282,6 +282,18 @@ namespace Codecepticon.Modules.CSharp
                 }
                 AllFunctions.Add(name);
             }
+
+            // Also collect Delegate function declarations.
+            var delegateMethods = syntaxTree.GetRoot().DescendantNodes().OfType<DelegateDeclarationSyntax>();
+            foreach (var m in delegateMethods)
+            {
+                string name = m.Identifier.ToString();
+                if (AllFunctions.Contains(name))
+                {
+                    continue;
+                }
+                AllFunctions.Add(name);
+            }
         }
 
         public static async Task FilterCollectedData()

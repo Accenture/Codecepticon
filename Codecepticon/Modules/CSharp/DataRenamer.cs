@@ -110,6 +110,21 @@ namespace Codecepticon.Modules.CSharp
                 solution = await RenameCode<MethodDeclarationSyntax>(solution, projectName, documentName, name, DataCollector.Mapping.Functions[name]);
             }
 
+            // Rename delegates.
+            var delegateMethods = syntaxTree.GetRoot().DescendantNodes().OfType<DelegateDeclarationSyntax>();
+            foreach(var m in delegateMethods)
+            {
+                string name = m.Identifier.ToString();
+                if (!DataCollector.Mapping.Functions.ContainsKey(name))
+                {
+                    Logger.Debug($"Delegate Function does not exist in mapping: {name}");
+
+                    continue;
+                }
+
+                solution = await RenameCode<DelegateDeclarationSyntax>(solution, projectName, documentName, name, DataCollector.Mapping.Functions[name]);
+            }
+
             return solution;
         }
 

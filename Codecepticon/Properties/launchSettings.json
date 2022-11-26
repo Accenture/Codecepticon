@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Codecepticon": {
-      "commandName": "Project",
-      "commandLineArgs": "--config C:\\data\\tmp\\seatbelt.xml"
+      "commandName": "Project"
     }
   }
 }
