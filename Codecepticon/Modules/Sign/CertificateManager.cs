@@ -35,13 +35,17 @@ namespace Codecepticon.Modules.Sign
             BigInteger serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), secureRandom);
             certificateGenerator.SetSerialNumber(serialNumber);
 
+            Logger.Debug("Creating Subject: " + Subject);
             X509Name subjectDN = new X509Name(true, Subject);
-            X509Name issuerDN = new X509Name(true, Issuer);
-
-            certificateGenerator.SetIssuerDN(issuerDN);
             certificateGenerator.SetSubjectDN(subjectDN);
 
+            Logger.Debug("Creating Issuer: " + Issuer);
+            X509Name issuerDN = new X509Name(true, Issuer);
+            certificateGenerator.SetIssuerDN(issuerDN);
+
+            Logger.Debug("Setting NotBefore: " + NotBefore);
             certificateGenerator.SetNotBefore(NotBefore);
+            Logger.Debug("Setting NotAfter: " + NotAfter);
             certificateGenerator.SetNotAfter(NotAfter);
 
             KeyGenerationParameters keyGeneration = new KeyGenerationParameters(secureRandom, KeyLength);
