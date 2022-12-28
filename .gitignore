@@ -32,3 +32,6 @@ Generated\ Files/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+
+# Misc
+launchSettings.json

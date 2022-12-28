@@ -41,3 +41,4 @@
 --unmap-file [path]             Specify an obfuscated file to unmap. Only works with --action unmap.
 
 --verbose                       What it says.
+--debug							What it says.

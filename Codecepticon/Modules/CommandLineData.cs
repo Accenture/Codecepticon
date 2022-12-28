@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Codecepticon.Modules.CSharp.Profiles;
 using Codecepticon.Utils;
 using Codecepticon.Utils.MarkovWordGenerator;
+using Microsoft.PowerShell.Commands;
 
 namespace Codecepticon.CommandLine
 {
@@ -15,7 +16,9 @@ namespace Codecepticon.CommandLine
         {
             None = 0,
             Obfuscate = 1,
-            Unmap = 2
+            Unmap = 2,
+            GenerateCertificate = 3,
+            Sign = 4,
         }
 
         public struct ProjectStruct
@@ -137,6 +140,22 @@ namespace Codecepticon.CommandLine
             public Vb6RenamingStruct Rename;
         }
 
+        public struct SignNewCertificate
+        {
+            public string CN;
+            public DateTime NotBefore;
+            public DateTime NotAfter;
+            public string Password;
+            public bool Overwrite;
+            public string PfxFile;
+        }
+
+        public struct SignSettings
+        {
+            public SignNewCertificate NewCertificate;
+            public string SignTool;
+        }
+
         public struct RenameGeneratorStruct
         {
             public NameGenerator.RandomNameGeneratorMethods Method;
@@ -164,5 +183,6 @@ namespace Codecepticon.CommandLine
         public static CSharpSettings CSharp = new CSharpSettings();
         public static PowerShellSettings PowerShell = new PowerShellSettings();
         public static Vb6Settings Vb6 = new Vb6Settings();
+        public static SignSettings Sign = new SignSettings();
     }
 }

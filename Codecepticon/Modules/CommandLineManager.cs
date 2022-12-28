@@ -9,6 +9,7 @@ using Codecepticon.Modules.VB6.CommandLine;
 using static Codecepticon.Modules.ModuleTypes;
 using Codecepticon.Utils;
 using System.Reflection;
+using Codecepticon.Modules.Sign.CommandLine;
 
 namespace Codecepticon.CommandLine
 {
@@ -85,6 +86,7 @@ namespace Codecepticon.CommandLine
                 { CodecepticonModules.CSharp, "CSharp.txt" },
                 { CodecepticonModules.Powershell, "PowerShell.txt" },
                 { CodecepticonModules.Vb6, "VBA.txt" },
+                { CodecepticonModules.Sign, "Sign.txt" }
             };
 
             string fileName = helpMapping.ContainsKey(module) ? helpMapping[module] : null;
@@ -145,6 +147,7 @@ namespace Codecepticon.CommandLine
                 "csharp" or "cs" => CodecepticonModules.CSharp,
                 "powershell" or "ps" => CodecepticonModules.Powershell,
                 "vba" or "vb6" => CodecepticonModules.Vb6,
+                "sign" => CodecepticonModules.Sign,
                 _ => CodecepticonModules.Unknown
             };
         }
@@ -274,6 +277,10 @@ namespace Codecepticon.CommandLine
                     Vb6CommandLine Vb6CommandManager = new Vb6CommandLine(Args);
                     result = Vb6CommandManager.Load();
                     break;
+                case CodecepticonModules.Sign:
+                    SignCommandLine SignCommandManager = new SignCommandLine(Args);
+                    result = SignCommandManager.Load();
+                    break;
             }
 
             return result;
@@ -333,6 +340,8 @@ namespace Codecepticon.CommandLine
             {
                 "obfuscate" => CommandLineData.Action.Obfuscate,
                 "unmap" => CommandLineData.Action.Unmap,
+                "cert" => CommandLineData.Action.GenerateCertificate,
+                "sign" => CommandLineData.Action.Sign,
                 _ => CommandLineData.Action.None
             };
         }

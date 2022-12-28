@@ -1,0 +1,83 @@
+﻿using Codecepticon.CommandLine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Codecepticon.Modules.Sign.CommandLine
+{
+    class SignCommandLine : CommandLineManager
+    {
+        public SignCommandLine(string[] args) : base(args)
+        {
+            Arguments = new Dictionary<string, string>
+            {
+                { "cn", "" },
+                { "not-before", "" },
+                { "not-after", "" },
+                { "password", "" },
+                { "pfx-file", "" },
+                { "overwrite", "switch" },
+                { "signtool", "" }
+            };
+            MergeArguments();
+        }
+
+        protected override bool Parse(Dictionary<string, string> arguments)
+        {
+            if (!ParseGlobalArguments(arguments))
+            {
+                return false;
+            }
+
+            foreach (KeyValuePair<string, string> argument in arguments)
+            {
+                switch (argument.Key.ToLower())
+                {
+                    case "cn":
+                        CommandLineData.Sign.NewCertificate.CN = argument.Value;
+                        break;
+                    case "not-after":
+                        try
+                        {
+                            CommandLineData.Sign.NewCertificate.NotAfter = DateTime.ParseExact(argument.Value, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                        catch (Exception e)
+                        {
+                            // Nothing.
+                        }
+                        break;
+                    case "not-before":
+                        try
+                        {
+                            CommandLineData.Sign.NewCertificate.NotBefore = DateTime.ParseExact(argument.Value, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                        catch (Exception e)
+                        {
+                            // Nothing.
+                        }
+                        break;
+                    case "password":
+                        CommandLineData.Sign.NewCertificate.Password= argument.Value;
+                        break;
+                    case "pfx-file":
+                        CommandLineData.Sign.NewCertificate.PfxFile= argument.Value;
+                        break;
+                    case "overwrite":
+                        if (argument.Value.ToLower() != "false")
+                        {
+                            CommandLineData.Sign.NewCertificate.Overwrite = (argument.Value.Length > 0);
+                        }
+                        break;
+                    case "signtool":
+                        CommandLineData.Sign.SignTool = argument.Value;
+                        break;
+                }
+            }
+
+            ValidateCommandLine validate = new ValidateCommandLine();
+            return validate.Run();
+        }
+    }
+}

@@ -14,7 +14,8 @@ namespace Codecepticon.Modules
             Unknown = 0,
             CSharp = 1,
             Powershell = 2,
-            Vb6 = 3
+            Vb6 = 3,
+            Sign = 101
         }
     }
 }

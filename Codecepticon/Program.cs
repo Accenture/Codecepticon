@@ -11,6 +11,7 @@ using Codecepticon.Modules.PowerShell;
 using Codecepticon.Modules.VB6;
 using static Codecepticon.Modules.ModuleTypes;
 using Newtonsoft.Json;
+using Codecepticon.Modules.Sign;
 
 namespace Codecepticon
 {
@@ -75,6 +76,10 @@ namespace Codecepticon
                 case CodecepticonModules.Vb6:
                     Vb6Manager vb6Manager = new Vb6Manager();
                     await vb6Manager.Run();
+                    break;
+                case CodecepticonModules.Sign:
+                    SignManager signManager = new SignManager();
+                    await signManager.Run();
                     break;
                 default:
                     Logger.Error("Code error: Module manager not implemented.");

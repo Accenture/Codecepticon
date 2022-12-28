@@ -1,0 +1,18 @@
+%%_HEADER_%%
+
+Usage: Codecepticon.exe --module sign [OPTIONS]...
+
+--action [cert|sign]            Specify the action to be executed:
+                                    cert: Generate a self-signed certificate (pfx).
+                                    sign: Sign an executable using a pfx file.
+--cn                            Specify a CN for a new self-signed certificate.
+--not-before                    Date from when the new certificate will be valid from, format is YYYY-MM-DD HH:MM:SS.
+--not-after                     Expiration date for the new certificate, format is YYYY-MM-DD HH:MM:SS.
+--pfx-file                      When used with '--action cert' this is where the pfx file will be saved as.
+                                When used with '--action sign' this is where the pfx file will be loaded from.
+--overwrite                     When used with '--action cert' this will indicate whether to rewrite the target file
+                                if it already exists.
+--password                      Password for the pfx file (either to save or load, depending on the --action)
+--signtool                      Only used with '--action sign' to indicate the location of signtool.exe on the system.
+                                If this argument is not passed, Codecepticon will try to find it automatically.
+--path [executable]             Location of the executable file to be signed.
