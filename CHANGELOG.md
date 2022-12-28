@@ -1,5 +1,13 @@
 # Codecepticon Changelog
 
+## v1.1.0
+
+* `[New]` Module: Implement the `sign` module, to enable creating self-signed certificates and using any given certificate to sign an executable. This functionality is using `signtool.exe`.
+
+## v1.0.3
+
+* `[Fix]` C#: Ensure that Delegate function/declarations are also renamed.
+
 ## v1.0.2
 
 * `[New]` Mapping: Added checkbox to "Match Exact Word" when searching within the document.
