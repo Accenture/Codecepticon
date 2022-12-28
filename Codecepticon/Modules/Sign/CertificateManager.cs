@@ -1,4 +1,5 @@
 ﻿using Codecepticon.Utils;
+using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
@@ -10,6 +11,7 @@ using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Codecepticon.Modules.Sign
@@ -20,7 +22,7 @@ namespace Codecepticon.Modules.Sign
 
         private const int KeyLength = 2048;
 
-        public bool GenerateCertificate(string CN, DateTime NotBefore, DateTime NotAfter, string Password, string PfxOutput)
+        public bool GenerateCertificate(string Subject, string Issuer, DateTime NotBefore, DateTime NotAfter, string Password, string PfxOutput)
         {
             // https://mcse.cloud/create-a-self-signed-certificate-with-bouncy-castle-and-c/
             Logger.Debug("Initialising random generators and certificate generators...");
@@ -33,8 +35,8 @@ namespace Codecepticon.Modules.Sign
             BigInteger serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), secureRandom);
             certificateGenerator.SetSerialNumber(serialNumber);
 
-            X509Name subjectDN = new X509Name("CN=" + CN);
-            X509Name issuerDN = subjectDN;
+            X509Name subjectDN = new X509Name(true, Subject);
+            X509Name issuerDN = new X509Name(true, Issuer);
 
             certificateGenerator.SetIssuerDN(issuerDN);
             certificateGenerator.SetSubjectDN(subjectDN);

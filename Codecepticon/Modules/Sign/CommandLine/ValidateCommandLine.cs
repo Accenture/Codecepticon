@@ -27,9 +27,15 @@ namespace Codecepticon.Modules.Sign.CommandLine
             {
                 case CommandLineData.Action.GenerateCertificate:
 
-                    if (String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.CN))
+                    if (String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.Subject))
                     {
-                        Logger.Error("Certificate CN is empty");
+                        Logger.Error("Certificate Subject is empty");
+                        return false;
+                    }
+
+                    if (String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.Issuer))
+                    {
+                        Logger.Error("Certificate Issuer is empty");
                         return false;
                     }
 
@@ -61,7 +67,8 @@ namespace Codecepticon.Modules.Sign.CommandLine
                         return false;
                     }
 
-                    Logger.Debug("New Certificate CN: " + CommandLineData.Sign.NewCertificate.CN);
+                    Logger.Debug("New Certificate Subject: " + CommandLineData.Sign.NewCertificate.Subject);
+                    Logger.Debug("New Certificate Issuer: " + CommandLineData.Sign.NewCertificate.Issuer);
                     Logger.Debug("New Certificate NotBefore: " + CommandLineData.Sign.NewCertificate.NotBefore);
                     Logger.Debug("New Certificate NotAfter: " + CommandLineData.Sign.NewCertificate.NotAfter);
                     Logger.Debug("New Certificate Password: " + CommandLineData.Sign.NewCertificate.Password);

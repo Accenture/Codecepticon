@@ -142,7 +142,8 @@ namespace Codecepticon.CommandLine
 
         public struct SignNewCertificate
         {
-            public string CN;
+            public string Subject;
+            public string Issuer;
             public DateTime NotBefore;
             public DateTime NotAfter;
             public string Password;

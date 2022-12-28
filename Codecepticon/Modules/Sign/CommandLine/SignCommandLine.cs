@@ -13,7 +13,8 @@ namespace Codecepticon.Modules.Sign.CommandLine
         {
             Arguments = new Dictionary<string, string>
             {
-                { "cn", "" },
+                { "issuer", "" },
+                { "subject", "" },
                 { "not-before", "" },
                 { "not-after", "" },
                 { "password", "" },
@@ -35,8 +36,11 @@ namespace Codecepticon.Modules.Sign.CommandLine
             {
                 switch (argument.Key.ToLower())
                 {
-                    case "cn":
-                        CommandLineData.Sign.NewCertificate.CN = argument.Value;
+                    case "subject":
+                        CommandLineData.Sign.NewCertificate.Subject = argument.Value;
+                        break;
+                    case "issuer":
+                        CommandLineData.Sign.NewCertificate.Issuer = argument.Value;
                         break;
                     case "not-after":
                         try

@@ -32,9 +32,18 @@ namespace Codecepticon.Modules.Sign
         {
             CertificateManager certificateManager = new CertificateManager();
             Logger.Info("Generating certificate...");
-            if (!certificateManager.GenerateCertificate(CommandLineData.Sign.NewCertificate.CN, CommandLineData.Sign.NewCertificate.NotBefore, CommandLineData.Sign.NewCertificate.NotAfter, CommandLineData.Sign.NewCertificate.Password, CommandLineData.Sign.NewCertificate.PfxFile))
+            try
             {
-                Logger.Error("Could not generate self-signed certificate");
+                bool result = certificateManager.GenerateCertificate(CommandLineData.Sign.NewCertificate.Subject, CommandLineData.Sign.NewCertificate.Issuer, CommandLineData.Sign.NewCertificate.NotBefore, CommandLineData.Sign.NewCertificate.NotAfter, CommandLineData.Sign.NewCertificate.Password, CommandLineData.Sign.NewCertificate.PfxFile);
+                if (!result)
+                {
+                    Logger.Error("Could not generate self-signed certificate");
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
                 return false;
             }
             Logger.Info("Certificate generated");

@@ -5,7 +5,8 @@ Usage: Codecepticon.exe --module sign [OPTIONS]...
 --action [cert|sign]            Specify the action to be executed:
                                     cert: Generate a self-signed certificate (pfx).
                                     sign: Sign an executable using a pfx file.
---cn                            Specify a CN for a new self-signed certificate.
+--subject                       Specify the subject for the new certificate (CN=Codecepticon,C=GB, etc).
+--issuer                        Specify the issuer for the new certificate (CN=Codecepticon Issuer,C=GB, etc).
 --not-before                    Date from when the new certificate will be valid from, format is YYYY-MM-DD HH:MM:SS.
 --not-after                     Expiration date for the new certificate, format is YYYY-MM-DD HH:MM:SS.
 --pfx-file                      When used with '--action cert' this is where the pfx file will be saved as.
