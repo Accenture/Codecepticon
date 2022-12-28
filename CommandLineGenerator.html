@@ -60,9 +60,9 @@
                         </div>
                     </div>
 
-                    <!-- General -->
+                    <!-- Modules -->
                     <div class="card mb-3">
-                        <div class="card-header">General</div>
+                        <div class="card-header">Module Selection</div>
                         <div class="card-body">
                             <!-- Module -->
                             <div class="mb-3">
@@ -71,15 +71,24 @@
                                     <option value="csharp">C#</option>
                                     <option value="powershell">PowerShell</option>
                                     <option value="vb6">VB6/VBA (Macro)</option>
+                                    <option value="sign">Sign</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
 
+                    <!-- General -->
+                    <div class="card mb-3">
+                        <div class="card-header">General</div>
+                        <div class="card-body">
                             <!-- Action -->
                             <div class="mb-3">
                                 <label for="action" class="form-label">Action</label>
                                 <select id="action" class="form-select">
-                                    <option value="obfuscate">Obfuscate</option>
-                                    <option value="unmap">Unmap</option>
+                                    <option value="obfuscate" class="family-obfuscation">Obfuscate</option>
+                                    <option value="unmap" class="family-obfuscation">Unmap</option>
+                                    <option value="cert" class="family-signing d-none">Generate Certificate</option>
+                                    <option value="sign" class="family-signing d-none">Sign Executable</option>
                                 </select>
                             </div>
 
@@ -410,6 +419,69 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="main-box-sign">
+                        <div class="card mt-5">
+                            <div class="card-header"><span class="box-cert">Generate Certificate</span><span class="box-sign d-none">Sign Executable</span></div>
+                            <div class="card-body">
+                                <!-- Certificate Subject -->
+                                <div class="mb-3 box-cert">
+                                    <label for="subject" class="form-label">Subject</label><span class="ms-1 text-danger">*</span>
+                                    <input type="text" id="subject" class="form-control" value="" placeholder="CN=Microsoft Windows,C=US">
+                                </div>
+
+                                <!-- Certificate Issuer -->
+                                <div class="mb-3 box-cert">
+                                    <label for="issuer" class="form-label">Issuer</label><span class="ms-1 text-danger">*</span>
+                                    <input type="text" id="issuer" class="form-control" value="" placeholder="CN=Microsoft Issuer,C=US">
+                                </div>
+
+                                <!-- Not Before -->
+                                <div class="mb-3 box-cert">
+                                    <label for="not-before" class="form-label">Not Before</label><span class="ms-1 text-danger">*</span>
+                                    <input type="datetime-local" id="not-before" class="form-control">
+                                </div>
+
+                                <!-- Not After -->
+                                <div class="mb-3 box-cert">
+                                    <label for="not-after" class="form-label">Not After</label><span class="ms-1 text-danger">*</span>
+                                    <input type="datetime-local" id="not-after" class="form-control">
+                                </div>
+
+                                <!-- Executable Path -->
+                                <div class="mb-3 box-sign">
+                                    <label for="executable" class="form-label">Executable Path</label><span class="ms-1 text-danger">*</span>
+                                    <input type="text" id="executable" class="form-control" value="" placeholder="C:\File\To\Sign.exe">
+                                </div>
+
+                                <!-- Pfx Location -->
+                                <div class="mb-3 box-cert box-sign">
+                                    <label for="pfx-file" class="form-label">PFX File Path</label><span class="ms-1 text-danger">*</span>
+                                    <input type="text" id="pfx-file" class="form-control" value="" placeholder="C:\Somewhere\PfxFile.pfx">
+                                </div>
+
+                                <!-- Overwrite -->
+                                <div class="mb-3 box-cert">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="overwrite">
+                                        <label class="form-check-label" for="overwrite">Overwrite if exists</label>
+                                    </div>
+                                </div>
+
+                                <!-- Pfx Password -->
+                                <div class="mb-3 box-cert box-sign">
+                                    <label for="password" class="form-label">PFX Password</label><span class="ms-1 text-danger">*</span>
+                                    <input type="text" id="password" class="form-control" value="">
+                                </div>
+
+                                <!-- Sign Tool Location -->
+                                <div class="mb-3 box-sign">
+                                    <label for="signtool" class="form-label">Microsoft SignTool</label><small class="ms-2">(Location of signtool.exe on the system. Run 'cd C:\ &amp;&amp; dir /b /s signtool.exe' to find)</small>
+                                    <input type="text" id="signtool" class="form-control" value="" placeholder="Leave empty to auto-locate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -458,6 +530,17 @@
                 quoteIfNeeded: function(value) { return this.format() == 'console' ? this.encloseInQuotes(value) : value; },
                 buildPath: function() { return this.element('#build-path').value; },
                 saveAs: function() { return this.element('#save-as').value; },
+                certSubject: function() { return this.element('#subject').value; },
+                certIssuer: function() { return this.element('#issuer').value; },
+                certNotBefore: function() { return this.getDateTime('#not-before'); },
+                certNotAfter: function() { return this.getDateTime('#not-after'); },
+                certPfxFile: function() { return this.element('#pfx-file').value; },
+                certPfxPassword: function() { return this.element('#password').value; },
+                certOverwrite: function() { return this.element('#overwrite').checked; },
+                getDateTime: function(selector) { let value = this.element(selector).value.replace('T', ' '); let seconds = this.getRandomInt(0, 59); seconds = (seconds >= 10 ? seconds : '0' + seconds); return value + ':' + seconds; },
+                getRandomInt: function(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); },
+                signTool: function() { return this.element('#signtool').value; },
+                fileToSign: function() { return this.element('#executable').value; },
                 
                 getRenameItems: function(module) {
                     let rename = [];
@@ -490,14 +573,31 @@
                 },
 
                 processUI: function() {
-                    switch (PageData.action()) {
-                        case "obfuscate":
-                            PageData.hide('.main-box-unmap');
-                            PageData.show('.main-box-obfuscate');
+                    // To keep this simple, split into families first.
+                    switch (PageData.module()) {
+                        case "csharp":
+                        case "powershell":
+                        case "vb6":
+                            PageData.hide('.main-box-sign');
+                            PageData.show('.main-box-unmap, .main-box-obfuscate');
+
+                            PageData.show('.family-obfuscation');
+                            if (PageData.element('#action').value == 'cert' || PageData.element('#action').value == 'sign') {
+                                PageData.element('#action').value = 'obfuscate';
+                            }
+                            
+                            PageData.hide('.family-signing');
                             break;
-                        case "unmap":
-                            PageData.show('.main-box-unmap');
-                            PageData.hide('.main-box-obfuscate');
+                        case "sign":
+                            PageData.hide('.main-box-unmap, .main-box-obfuscate');
+                            PageData.show('.main-box-sign');
+
+                            PageData.show('.family-signing');
+                            if (PageData.element('#action').value == 'obfuscate' || PageData.element('#action').value == 'unmap') {
+                                PageData.element('#action').value = 'cert';
+                            }
+                            PageData.hide('.family-obfuscation');
+                            
                             break;
                     }
 
@@ -514,8 +614,29 @@
                             PageData.show('.box-vb6, .box-save-as');
                             PageData.hide('.box-powershell, .box-csharp');
                             break;
+                        case "sign":
+                            break;
                         default:
                             PageData.hide('.box-vb6, .box-powershell, .box-csharp, .box-save-as');
+                            break;
+                    }
+
+                    switch (PageData.action()) {
+                        case "obfuscate":
+                            PageData.hide('.main-box-unmap');
+                            PageData.show('.main-box-obfuscate');
+                            break;
+                        case "unmap":
+                            PageData.show('.main-box-unmap');
+                            PageData.hide('.main-box-obfuscate');
+                            break;
+                        case "cert":
+                            PageData.hide('.box-sign');
+                            PageData.show('.box-cert');
+                            break;
+                        case "sign":
+                            PageData.hide('.box-cert');
+                            PageData.show('.box-sign');
                             break;
                     }
 
@@ -562,6 +683,8 @@
                             PageData.show('.box-rewrite-external-file');
                             break;
                     }
+
+                    CodecepticonCmdGenerator.process();
                 },
 
                 bindElements: function() {
@@ -766,11 +889,97 @@
                     return output;
                 },
 
+                __generateSigningCommand: function() {
+                    let output = {};
+
+                    output['action'] = 'cert';
+
+                    // Module.
+                    if (PageData.module().length > 0) {
+                        output['module'] = PageData.module();
+                    }
+
+                    // Action.
+                    if (PageData.action().length > 0) {
+                        output['action'] = PageData.action();
+                    }
+
+                    // Verbose.
+                    if (PageData.verbose()) {
+                        output['verbose'] = true;
+                    }
+
+                    // Debug.
+                    if (PageData.debug()) {
+                        output['debug'] = true;
+                    }
+
+                    if (output['action'] == 'cert') {
+                        // Subject.
+                        if (PageData.certSubject().length > 0) {
+                            output['subject'] = PageData.quoteIfNeeded(PageData.certSubject());
+                        }
+
+                        // Issuer.
+                        if (PageData.certIssuer().length > 0) {
+                            output['issuer'] = PageData.quoteIfNeeded(PageData.certIssuer());
+                        }
+
+                        // NotBefore.
+                        if (PageData.certNotBefore().length > 0) {
+                            output['not-before'] = PageData.quoteIfNeeded(PageData.certNotBefore());
+                        }
+
+                        // NotAfter.
+                        if (PageData.certNotAfter().length > 0) {
+                            output['not-after'] = PageData.quoteIfNeeded(PageData.certNotAfter());
+                        }
+                    }
+
+                    // Pfx File.
+                    if (PageData.certPfxFile().length > 0) {
+                        output['pfx-file'] = PageData.quoteIfNeeded(PageData.certPfxFile());
+
+                        // Check if we need to overwrite.
+                        if (PageData.certOverwrite() && output['action'] == 'cert') {
+                            output['overwrite'] = true;
+                        }
+
+                        // Password.
+                        if (PageData.certPfxPassword().length > 0) {
+                            output['password'] = PageData.quoteIfNeeded(PageData.certPfxPassword());
+                        }
+                    }
+
+                    if (output['action'] == 'sign') {
+                        // File to sign.
+                        if (PageData.fileToSign().length > 0) {
+                            output['path'] = PageData.quoteIfNeeded(PageData.fileToSign());
+                        }
+
+                        // Sign tool.
+                        if (PageData.signTool().length > 0) {
+                            output['signtool'] = PageData.quoteIfNeeded(PageData.signTool());
+                        }
+                    }
+
+                    return output;
+                },
+
                 process: function() {
-                    let commandLine = PageData.action() == 'obfuscate' 
-                        ? CodecepticonCmdGenerator.__generateObfuscationCommand() 
-                        : CodecepticonCmdGenerator.__generateUnmappingCommand();
-                    ;
+                    let commandLine = '';
+                    switch (PageData.action()) {
+                        case 'obfuscate':
+                            commandLine = CodecepticonCmdGenerator.__generateObfuscationCommand();
+                            break;
+                        case 'unmap':
+                            commandLine = CodecepticonCmdGenerator.__generateUnmappingCommand();
+                            break;
+                        case 'cert':
+                        case 'sign':
+                            commandLine = CodecepticonCmdGenerator.__generateSigningCommand();
+                            break;
+                    }
                     PageData.commandLine(CodecepticonCmdGenerator.__buildCommandLine(commandLine));
                 },
 
