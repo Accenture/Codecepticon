@@ -15,6 +15,7 @@ namespace Codecepticon.Modules.Sign.CommandLine
             {
                 { "issuer", "" },
                 { "subject", "" },
+                { "copy-from", "" },
                 { "not-before", "" },
                 { "not-after", "" },
                 { "password", "" },
@@ -41,6 +42,9 @@ namespace Codecepticon.Modules.Sign.CommandLine
                         break;
                     case "issuer":
                         CommandLineData.Sign.NewCertificate.Issuer = argument.Value;
+                        break;
+                    case "copy-from":
+                        CommandLineData.Sign.NewCertificate.CopyFrom = argument.Value;
                         break;
                     case "not-after":
                         try

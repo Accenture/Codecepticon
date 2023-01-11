@@ -92,5 +92,10 @@ namespace Codecepticon.Modules.Sign
             
             return true;
         }
+
+        public System.Security.Cryptography.X509Certificates.X509Certificate GetCertificateFromFile(string signedFile)
+        {
+            return System.Security.Cryptography.X509Certificates.X509Certificate2.CreateFromSignedFile(signedFile);
+        }
     }
 }

@@ -149,6 +149,7 @@ namespace Codecepticon.CommandLine
             public string Password;
             public bool Overwrite;
             public string PfxFile;
+            public string CopyFrom;
         }
 
         public struct SignSettings

@@ -7,6 +7,8 @@ Usage: Codecepticon.exe --module sign [OPTIONS]...
                                     sign: Sign an executable using a pfx file.
 --subject                       Specify the subject for the new certificate (CN=Codecepticon,C=GB, etc).
 --issuer                        Specify the issuer for the new certificate (CN=Codecepticon Issuer,C=GB, etc).
+--copy-from                     Specify a signed file to copy the Subject/Issuer from. If --subject or --issuer are
+                                also set those will supercede this argument.
 --not-before                    Date from when the new certificate will be valid from, format is YYYY-MM-DD HH:MM:SS.
 --not-after                     Expiration date for the new certificate, format is YYYY-MM-DD HH:MM:SS.
 --pfx-file                      When used with '--action cert' this is where the pfx file will be saved as.

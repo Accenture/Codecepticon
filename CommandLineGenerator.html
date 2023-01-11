@@ -424,16 +424,28 @@
                         <div class="card mt-5">
                             <div class="card-header"><span class="box-cert">Generate Certificate</span><span class="box-sign d-none">Sign Executable</span></div>
                             <div class="card-body">
-                                <!-- Certificate Subject -->
-                                <div class="mb-3 box-cert">
-                                    <label for="subject" class="form-label">Subject</label><span class="ms-1 text-danger">*</span>
-                                    <input type="text" id="subject" class="form-control" value="" placeholder="CN=Microsoft Windows,C=US">
-                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Certificate Subject -->
+                                        <div class="mb-3 box-cert">
+                                            <label for="subject" class="form-label">Subject</label><span class="ms-1 text-danger">*</span>
+                                            <input type="text" id="subject" class="form-control" value="" placeholder="CN=Microsoft Windows,C=US">
+                                        </div>
 
-                                <!-- Certificate Issuer -->
-                                <div class="mb-3 box-cert">
-                                    <label for="issuer" class="form-label">Issuer</label><span class="ms-1 text-danger">*</span>
-                                    <input type="text" id="issuer" class="form-control" value="" placeholder="CN=Microsoft Issuer,C=US">
+                                        <!-- Certificate Issuer -->
+                                        <div class="mb-3 box-cert">
+                                            <label for="issuer" class="form-label">Issuer</label><span class="ms-1 text-danger">*</span>
+                                            <input type="text" id="issuer" class="form-control" value="" placeholder="CN=Microsoft Issuer,C=US">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <!-- Copy certificate subject/issuer from an existing file -->
+                                        <div class="mb-3 box-cert">
+                                            <label for="copy-from" class="form-label">Copy Subject/Issuer from Existing File</label>
+                                            <input type="text" id="copy-from" class="form-control" value="" placeholder="C:\Windows\System32\WerFault.exe">
+                                            <small class="fst-italic">This will load the Subject and Issuer from the existing file. If you also set the subject/issuer on the left, those values will supercede the loaded values from the existing file.</small>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Not Before -->
@@ -537,7 +549,8 @@
                 certPfxFile: function() { return this.element('#pfx-file').value; },
                 certPfxPassword: function() { return this.element('#password').value; },
                 certOverwrite: function() { return this.element('#overwrite').checked; },
-                getDateTime: function(selector) { let value = this.element(selector).value.replace('T', ' '); let seconds = this.getRandomInt(0, 59); seconds = (seconds >= 10 ? seconds : '0' + seconds); return value + ':' + seconds; },
+                certCopyFrom: function() { return this.element('#copy-from').value; },
+                getDateTime: function(selector) { let value = this.element(selector).value.replace('T', ' '); if (value.length === 0) { return ''; }; let seconds = this.getRandomInt(0, 59); seconds = (seconds >= 10 ? seconds : '0' + seconds); return value + ':' + seconds; },
                 getRandomInt: function(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); },
                 signTool: function() { return this.element('#signtool').value; },
                 fileToSign: function() { return this.element('#executable').value; },
@@ -923,6 +936,11 @@
                         // Issuer.
                         if (PageData.certIssuer().length > 0) {
                             output['issuer'] = PageData.quoteIfNeeded(PageData.certIssuer());
+                        }
+
+                        // Copy From.
+                        if (PageData.certCopyFrom().length > 0) {
+                            output['copy-from'] = PageData.quoteIfNeeded(PageData.certCopyFrom());
                         }
 
                         // NotBefore.

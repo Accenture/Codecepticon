@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,20 +24,55 @@ namespace Codecepticon.Modules.Sign.CommandLine
 
         protected bool ValidateParameters()
         {
+            CertificateManager certificateManager = new CertificateManager();
+
             switch (CommandLineData.Global.Action)
             {
                 case CommandLineData.Action.GenerateCertificate:
 
+                    string copyIssuer = "";
+                    string copySubject = "";
+
+                    if (!String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.CopyFrom))
+                    {
+                        if (!File.Exists(CommandLineData.Sign.NewCertificate.CopyFrom))
+                        {
+                            Logger.Error("File to copy certificate details from, does not exist: " + CommandLineData.Sign.NewCertificate.CopyFrom);
+                            return false;
+                        }
+
+                        try
+                        {
+                            X509Certificate copyFromCertificate = certificateManager.GetCertificateFromFile(CommandLineData.Sign.NewCertificate.CopyFrom);
+                            copyIssuer = copyFromCertificate.Issuer;
+                            copySubject = copyFromCertificate.Subject;
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error("Could not read the certificate from: " + CommandLineData.Sign.NewCertificate.CopyFrom + " - Are you sure it's signed?");
+                            return false;
+                        }
+                    }
+                    
+
                     if (String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.Subject))
                     {
-                        Logger.Error("Certificate Subject is empty");
-                        return false;
+                        if (String.IsNullOrEmpty(copySubject))
+                        {
+                            Logger.Error("Certificate Subject is empty");
+                            return false;
+                        }
+                        CommandLineData.Sign.NewCertificate.Subject = copySubject;
                     }
 
                     if (String.IsNullOrEmpty(CommandLineData.Sign.NewCertificate.Issuer))
                     {
-                        Logger.Error("Certificate Issuer is empty");
-                        return false;
+                        if (String.IsNullOrEmpty(copyIssuer))
+                        {
+                            Logger.Error("Certificate Issuer is empty");
+                            return false;
+                        }
+                        CommandLineData.Sign.NewCertificate.Issuer = copyIssuer;
                     }
 
                     if (CommandLineData.Sign.NewCertificate.NotBefore == default)
@@ -66,6 +102,9 @@ namespace Codecepticon.Modules.Sign.CommandLine
                         Logger.Error("Certificate Pfx path already exists and --overwrite was not set");
                         return false;
                     }
+
+                    CommandLineData.Sign.NewCertificate.Subject = FixDN(CommandLineData.Sign.NewCertificate.Subject);
+                    CommandLineData.Sign.NewCertificate.Issuer = FixDN(CommandLineData.Sign.NewCertificate.Issuer);
 
                     Logger.Debug("New Certificate Subject: " + CommandLineData.Sign.NewCertificate.Subject);
                     Logger.Debug("New Certificate Issuer: " + CommandLineData.Sign.NewCertificate.Issuer);
@@ -105,7 +144,6 @@ namespace Codecepticon.Modules.Sign.CommandLine
                     }
 
                     // Validate the PFX Password.
-                    CertificateManager certificateManager = new CertificateManager();
                     if (!certificateManager.CheckPfxPassword(CommandLineData.Sign.NewCertificate.PfxFile, CommandLineData.Sign.NewCertificate.Password))
                     {
                         Logger.Error("Invalid PFX file password");
@@ -118,6 +156,28 @@ namespace Codecepticon.Modules.Sign.CommandLine
                     return false;
             }
             return true;
+        }
+
+        protected string FixDN(string dn)
+        {
+            // BouncyCastle does not recognise S=XXX within an X509Name, and it has to be in the form of ST=XXX.
+            // This function tries to convert the S= to ST=.
+
+            Dictionary<string, string> searchAndReplace = new Dictionary<string, string>
+            {
+                { ",S=", ",ST=" },
+                { ", S=", ", ST=" }
+            };
+
+            foreach (KeyValuePair<string, string> item in searchAndReplace)
+            {
+                if (dn.IndexOf(item.Key) < 0)
+                {
+                    continue;
+                }
+                dn = dn.Replace(item.Key, item.Value);
+            }
+            return dn;
         }
     }
 }
