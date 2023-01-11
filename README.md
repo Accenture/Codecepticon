@@ -16,6 +16,7 @@
     * [Functionality Deep Dive](docs/Functionality.md)
     * [Tips](docs/Tips.md)
     * [Known Issues](docs/KnownIssues.md)
+    * [Sign Executables](#sign-executables)
 * [FAQ](#faq)
 * [Troubleshooting](#troubleshooting)
 * [Contributions](#contributions)
