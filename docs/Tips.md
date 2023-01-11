@@ -47,3 +47,7 @@ If you find yourself in a situation where you can run an executable but you cann
 Usually you will not need the entire functionality that tools like `Rubeus`, `SharpHound`, or `SharpView` have to offer, however the larger the codebase is the easier it is to fingerprint different aspects of it. Therefore, consider trimming down a project until you are left with only the required functionality.
 
 [JetBrains Resharper](https://www.jetbrains.com/resharper/) offers functionality to identify unused methods, classes, declarations, etc, to assist with this.
+
+## Sign Your Executables
+
+It's quite suprising that by simply signing an executable can bypass some AV vendors, even if the certificate is invalid.

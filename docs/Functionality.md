@@ -21,6 +21,9 @@
     * [C#](#c)
     * [VBA](#vba)
     * [PowerShell](#powershell)
+* [Signing Executables](#signing-executables)
+    * [Generating Certificates](#generating-certificates)
+    * [Signing](#signing)
 * [Mapping](#mapping)
     * [Unmapping](#unmapping)
 
@@ -191,6 +194,16 @@ The level of customisation supported by the PowerShell module is:
 * Variables / Parameters
 
 These restrictions exist for similar reasons as to the ones under [VBA](#vba).
+
+## Signing Executables
+
+### Generating Certificates
+
+Codecepticon can be used to generate code signing certificates - which of course will be self-signed. The main requirement is that the Subject and Issuer are set to valid strings as those will be parsed by BouncyCastle during generation. It is also possible to copy the Subject and Issuer from existing files, by using the `--copy-from` argument and then passing an existing signed file.
+
+### Signing
+
+Once a PFX file has been created, it can be used to signed any executable you want, by using the `sign` action. Of course, it is possible to use any PFX file as long as it contains both the private and public key.
 
 ## Mapping
 
