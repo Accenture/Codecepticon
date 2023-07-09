@@ -486,11 +486,28 @@
                                     <input type="text" id="password" class="form-control" value="">
                                 </div>
 
-                                <!-- Sign Tool Location -->
-                                <div class="mb-3 box-sign">
-                                    <label for="signtool" class="form-label">Microsoft SignTool</label><small class="ms-2">(Location of signtool.exe on the system. Run 'cd C:\ &amp;&amp; dir /b /s signtool.exe' to find)</small>
-                                    <input type="text" id="signtool" class="form-control" value="" placeholder="Leave empty to auto-locate">
+                                <!-- Timestamp Server & Signature Algorithm -->
+                                <div class="row mb-3 box-sign">
+                                    <div class="col">
+                                        <div>
+                                            <label for="timestamp" class="form-label">Timestamp Server</label>
+                                            <input type="text" id="timestamp" class="form-control" value="" placeholder="http://timestamp.sectigo.com">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <label for="algorithm" class="form-label">Signature Algorithm</label><span class="ms-1 text-danger">*</span>
+                                            <select class="form-select" id="algorithm">
+                                                <option value="SHA256">SHA256</option>
+                                                <option value="SHA384">SHA384</option>
+                                                <option value="SHA512">SHA512</option>
+                                                <option value="SHA1">SHA1</option>
+                                                <option value="MD5">MD5</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -552,7 +569,8 @@
                 certCopyFrom: function() { return this.element('#copy-from').value; },
                 getDateTime: function(selector) { let value = this.element(selector).value.replace('T', ' '); if (value.length === 0) { return ''; }; let seconds = this.getRandomInt(0, 59); seconds = (seconds >= 10 ? seconds : '0' + seconds); return value + ':' + seconds; },
                 getRandomInt: function(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); },
-                signTool: function() { return this.element('#signtool').value; },
+                getTimestamp: function() { return this.element('#timestamp').value; },
+                getSignatureAlgorithm: function() { return this.element('#algorithm').value; },
                 fileToSign: function() { return this.element('#executable').value; },
                 
                 getRenameItems: function(module) {
@@ -975,9 +993,12 @@
                             output['path'] = PageData.quoteIfNeeded(PageData.fileToSign());
                         }
 
-                        // Sign tool.
-                        if (PageData.signTool().length > 0) {
-                            output['signtool'] = PageData.quoteIfNeeded(PageData.signTool());
+                        if (PageData.getTimestamp().length > 0) {
+                            output['timestamp'] = PageData.getTimestamp();
+                        }
+
+                        if (PageData.getSignatureAlgorithm().length > 0) {
+                            output['algorithm'] = PageData.getSignatureAlgorithm();
                         }
                     }
 

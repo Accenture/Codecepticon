@@ -133,21 +133,27 @@ namespace Codecepticon.Modules.Sign.CommandLine
                         return false;
                     }
 
-                    if (String.IsNullOrEmpty(CommandLineData.Sign.SignTool))
-                    {
-                        Logger.Info("SignTool path is empty - will try to find signtool.exe");
-                    }
-                    else if (!File.Exists(CommandLineData.Sign.SignTool))
-                    {
-                        Logger.Error("Path for signtool.exe does not exist: " + CommandLineData.Sign.SignTool);
-                        return false;
-                    }
-
                     // Validate the PFX Password.
                     if (!certificateManager.CheckPfxPassword(CommandLineData.Sign.NewCertificate.PfxFile, CommandLineData.Sign.NewCertificate.Password))
                     {
                         Logger.Error("Invalid PFX file password");
                         return false;
+                    }
+
+                    if (String.IsNullOrEmpty(CommandLineData.Sign.SignatureAlgorithm))
+                    {
+                        Logger.Error("Signature Algorithm not set");
+                        return false;
+                    }
+                    else if (!IsValidSignatureAlgorithm(CommandLineData.Sign.SignatureAlgorithm))
+                    {
+                        Logger.Error("Invalid signature algorithm selected");
+                        return false;
+                    }
+
+                    if (String.IsNullOrEmpty(CommandLineData.Sign.TimestampServer))
+                    {
+                        CommandLineData.Sign.TimestampServer = ""; // Make sure it's not null.
                     }
 
                     break;
@@ -156,6 +162,12 @@ namespace Codecepticon.Modules.Sign.CommandLine
                     return false;
             }
             return true;
+        }
+
+        protected bool IsValidSignatureAlgorithm(string algorithm)
+        {
+            List<string> validAlgorithms = new() { "MD5", "SHA1", "SHA256", "SHA384", "SHA512" };
+            return validAlgorithms.Contains(algorithm);
         }
 
         protected string FixDN(string dn)

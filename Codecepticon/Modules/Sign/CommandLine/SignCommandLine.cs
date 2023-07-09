@@ -21,7 +21,8 @@ namespace Codecepticon.Modules.Sign.CommandLine
                 { "password", "" },
                 { "pfx-file", "" },
                 { "overwrite", "switch" },
-                { "signtool", "" }
+                { "algorithm", "" },
+                { "timestamp", "" }
             };
             MergeArguments();
         }
@@ -67,10 +68,10 @@ namespace Codecepticon.Modules.Sign.CommandLine
                         }
                         break;
                     case "password":
-                        CommandLineData.Sign.NewCertificate.Password= argument.Value;
+                        CommandLineData.Sign.NewCertificate.Password = argument.Value;
                         break;
                     case "pfx-file":
-                        CommandLineData.Sign.NewCertificate.PfxFile= argument.Value;
+                        CommandLineData.Sign.NewCertificate.PfxFile = argument.Value;
                         break;
                     case "overwrite":
                         if (argument.Value.ToLower() != "false")
@@ -78,8 +79,11 @@ namespace Codecepticon.Modules.Sign.CommandLine
                             CommandLineData.Sign.NewCertificate.Overwrite = (argument.Value.Length > 0);
                         }
                         break;
-                    case "signtool":
-                        CommandLineData.Sign.SignTool = argument.Value;
+                    case "algorithm":
+                        CommandLineData.Sign.SignatureAlgorithm = argument.Value.ToUpper();
+                        break;
+                    case "timestamp":
+                        CommandLineData.Sign.TimestampServer = argument.Value;
                         break;
                 }
             }

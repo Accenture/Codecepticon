@@ -1,5 +1,9 @@
 # Codecepticon Changelog
 
+## v1.2.0
+
+* `[Update]` Removed the `signtool.exe` dependency and are now natively signing executables. The code was taken & customised from https://github.com/Danielku15/SigningServer, under MIT License - original author is Danielku15.
+
 ## v1.1.0
 
 * `[New]` Module: Implement the `sign` module, to enable creating self-signed certificates and using any given certificate to sign an executable. This functionality is using `signtool.exe`.

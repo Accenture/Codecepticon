@@ -155,7 +155,8 @@ namespace Codecepticon.CommandLine
         public struct SignSettings
         {
             public SignNewCertificate NewCertificate;
-            public string SignTool;
+            public string TimestampServer;
+            public string SignatureAlgorithm;
         }
 
         public struct RenameGeneratorStruct

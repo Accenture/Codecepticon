@@ -16,6 +16,8 @@ Usage: Codecepticon.exe --module sign [OPTIONS]...
 --overwrite                     When used with '--action cert' this will indicate whether to rewrite the target file
                                 if it already exists.
 --password                      Password for the pfx file (either to save or load, depending on the --action)
---signtool                      Only used with '--action sign' to indicate the location of signtool.exe on the system.
-                                If this argument is not passed, Codecepticon will try to find it automatically.
 --path [executable]             Location of the executable file to be signed.
+--algorithm                     When used with '--action sign', this argument will specify the signature algorithm.
+                                This can be one of: MD5, SHA1, SHA256, SHA384, SHA512.
+--timestamp                     When used with '--action sign', this is where the Timestamp Server is specified.
+                                For example 'http://timestamp.sectigo.com' or 'http://timestamp.digicert.com'.

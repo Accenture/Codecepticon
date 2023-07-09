@@ -4,18 +4,19 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <Platforms>AnyCPU;x86;x64</Platforms>
 	<LangVersion>9.0</LangVersion>
 	<PackageId>Codecepticon</PackageId>
 	<Title>Codecepticon</Title>
-	<Version>1.1.0</Version>
+	<Version>1.2.0</Version>
 	<Authors>Pavel Tsakalidis</Authors>
 	<Company>Accenture Security</Company>
 	<Product>Codecepticon</Product>
 	<Description>Offensive Security Code Obfuscator</Description>
 	<PackageProjectUrl>https://github.com/Accenture/Codecepticon</PackageProjectUrl>
 	<AssemblyVersion></AssemblyVersion>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,9 +1,11 @@
 ﻿using Codecepticon.CommandLine;
+using Codecepticon.Modules.Sign.MsSign;
 using Codecepticon.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,10 +21,6 @@ namespace Codecepticon.Modules.Sign
                     GenerateCertificate();
                     break;
                 case CommandLineData.Action.Sign:
-                    if (!FindSignTool())
-                    {
-                        return;
-                    }
                     SignExecutable();
                     break;
             }
@@ -50,38 +48,47 @@ namespace Codecepticon.Modules.Sign
             return true;
         }
 
-        protected bool FindSignTool()
-        {
-            if (String.IsNullOrEmpty(CommandLineData.Sign.SignTool))
-            {
-                Logger.Info("No signtool.exe specified, will look for it now...");
-                SignToolManager signToolManager = new SignToolManager();
-                CommandLineData.Sign.SignTool = signToolManager.Find();
-                if (String.IsNullOrEmpty(CommandLineData.Sign.SignTool) || !File.Exists(CommandLineData.Sign.SignTool))
-                {
-                    Logger.Error("Could not find signtool.exe");
-                    return false;
-                }
-                Logger.Info("Found signtool.exe: " + CommandLineData.Sign.SignTool);
-            }
-            return File.Exists(CommandLineData.Sign.SignTool);
-        }
-
         protected bool SignExecutable()
         {
-            string stdOutput = "";
-            string stdError = "";
-
-            Logger.Info("Signing executable...");
-            SignToolManager signToolManager = new SignToolManager();
-            bool result = signToolManager.SignExecutable(CommandLineData.Sign.SignTool, CommandLineData.Global.Project.Path, CommandLineData.Sign.NewCertificate.PfxFile, CommandLineData.Sign.NewCertificate.Password, ref stdOutput, ref stdError);
-            if (!result)
+            Logger.Info("Loading certificate...");
+            
+            X509Certificate2 certificate;
+            try
             {
-                Logger.Error("There was an error while signing the file:");
-                Logger.Error("", true, false);
-                Logger.Error(stdError, true, false);
+                certificate = new(CommandLineData.Sign.NewCertificate.PfxFile, CommandLineData.Sign.NewCertificate.Password);
+            } catch (Exception e)
+            {
+                Logger.Error("Could not load PFX file: " + CommandLineData.Sign.NewCertificate.PfxFile);
+                Logger.Error(e.Message);
                 return false;
             }
+
+            try
+            {
+                Logger.Info("Signing executable...");
+                SignFileRequest request = new()
+                {
+                    Certificate = certificate,
+                    PrivateKey = certificate.GetRSAPrivateKey(),
+                    OverwriteSignature = true,
+                    InputFilePath = CommandLineData.Global.Project.Path,
+                    HashAlgorithm = CommandLineData.Sign.SignatureAlgorithm,
+                    TimestampServer = CommandLineData.Sign.TimestampServer,
+                };
+
+                PortableExecutableSigningTool signingTool = new();
+                SignFileResponse response = signingTool.SignFile(request);
+                if (response.Status != SignFileResponseStatus.FileSigned && response.Status != SignFileResponseStatus.FileResigned)
+                {
+                    return false;
+                }
+            } catch (Exception e)
+            {
+                Logger.Error("Could not sign executable");
+                Logger.Error(e.Message);
+                return false;
+            }
+            
 
             Logger.Success("Executable signed");
             return true;
