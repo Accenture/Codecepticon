@@ -119,7 +119,7 @@ Therefore it is **critical** to always test your result in a local environment f
 
 ### Sign Executables
 
-It is also possible to use Codecepticon to digitally sign executable files (your compiled output). Codecepticon can both generate a signing certificate for you, and also use it (or any other you may provide) to sign your target file. Please note that for this functionality you will need Microsoft's [SignTool](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool) - although it should be automatically installed when you install Visual Studio 2022.
+It is also possible to use Codecepticon to digitally sign executable files (your compiled output). Codecepticon can both generate a signing certificate for you, and also use it (or any other you may provide) to sign your target file.
 
 ## FAQ
 
