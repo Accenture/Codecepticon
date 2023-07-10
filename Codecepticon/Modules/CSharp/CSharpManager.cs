@@ -112,6 +112,7 @@ namespace Codecepticon.Modules.CSharp
                     Logger.Verbose($"\tProperties:\t{DataCollector.AllProperties.Count}");
                     Logger.Verbose($"\tParameters:\t{DataCollector.AllParameters.Count}");
                     Logger.Verbose($"\tVariables:\t{DataCollector.AllVariables.Count}");
+                    Logger.Verbose($"\tStructs:\t{DataCollector.AllStructs.Count}");
 
                     Logger.Info("Generating mappings...");
                     if (await GenerateMappings() == false)
@@ -190,6 +191,7 @@ namespace Codecepticon.Modules.CSharp
                 await DataCollector.CollectProperties(solution, project.Name, document.Name);
                 await DataCollector.CollectVariables(solution, project.Name, document.Name);
                 await DataCollector.CollectParameters(solution, project.Name, document.Name);
+                await DataCollector.CollectStructs(solution, project.Name, document.Name);
             }
         }
 
@@ -317,6 +319,21 @@ namespace Codecepticon.Modules.CSharp
                     }
 
                     DataCollector.Mapping.Parameters.Add(name, newName);
+                }
+            }
+
+            if (CommandLineData.CSharp.Rename.Structs)
+            {
+                Logger.Verbose("Creating mappings for structs");
+                foreach (string name in DataCollector.AllStructs)
+                {
+                    newName = await GenerateName(CommandLineData.Global.NameGenerator, DataCollector.IsMappingUnique);
+                    if (newName.Length == 0)
+                    {
+                        return false;
+                    }
+
+                    DataCollector.Mapping.Structs.Add(name, newName);
                 }
             }
 
@@ -580,6 +597,28 @@ namespace Codecepticon.Modules.CSharp
                         Logger.Verbose(".", false, false);
                     }
                     solution = await dataRenamer.RenameVariables(solution, project.Name, document.Name);
+                }
+                if (!CommandLineData.Global.Project.Debug)
+                {
+                    Logger.Info("", true, false);
+                }
+            }
+
+            if (CommandLineData.CSharp.Rename.Structs)
+            {
+                Logger.Info($"Renaming {DataCollector.Mapping.Structs.Count} structs...", CommandLineData.Global.Project.Debug);
+                c = 0;
+                foreach (Document document in project.Documents)
+                {
+                    if (CommandLineData.Global.Project.Debug)
+                    {
+                        Logger.Debug($"Renaming structs in document {document.FilePath}");
+                    }
+                    else if (++c % step == 0)
+                    {
+                        Logger.Verbose(".", false, false);
+                    }
+                    solution = await dataRenamer.RenameStructs(solution, project.Name, document.Name);
                 }
                 if (!CommandLineData.Global.Project.Debug)
                 {

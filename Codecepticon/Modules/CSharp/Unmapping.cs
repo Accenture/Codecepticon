@@ -23,6 +23,7 @@ namespace Codecepticon.Modules.CSharp
                 ["properties"] = "",
                 ["variables"] = "",
                 ["parameters"] = "",
+                ["structs"] = "",
                 ["cmdline"] = "",
             };
 
@@ -59,6 +60,11 @@ namespace Codecepticon.Modules.CSharp
             if (CommandLineData.CSharp.Rename.Parameters)
             {
                 data["parameters"] = ConcatData(DataCollector.Mapping.Parameters);
+            }
+
+            if (CommandLineData.CSharp.Rename.Structs)
+            {
+                data["structs"] = ConcatData(DataCollector.Mapping.Structs);
             }
 
             if (CommandLineData.CSharp.Rename.CommandLine)

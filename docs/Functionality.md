@@ -173,6 +173,7 @@ The level of customisation supported by the C# module is:
 * Properties
 * Parameters
 * Variables
+* Structs
 * Command Line _(only for targets that have a pre-existing Profile - like SharpHound, Rubeus, etc)_
 
 This means that it is possible to choose which identifiers should be obfuscated.

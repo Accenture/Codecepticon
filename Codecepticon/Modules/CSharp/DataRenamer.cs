@@ -190,5 +190,26 @@ namespace Codecepticon.Modules.CSharp
 
             return solution;
         }
+
+        public async Task<Solution> RenameStructs(Solution solution, string projectName, string documentName)
+        {
+            Document document = VisualStudioManager.GetDocumentByName(solution, projectName, documentName);
+
+            SyntaxTree syntaxTree = await document.GetSyntaxTreeAsync();
+            var structs = syntaxTree.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>();
+            foreach (var s in structs)
+            {
+                string name = s.Identifier.ToString();
+                if (!DataCollector.Mapping.Structs.ContainsKey(name))
+                {
+                    Logger.Debug($"Struct does not exist in mapping: {name}");
+                    continue;
+                }
+
+                solution = await RenameCode<StructDeclarationSyntax>(solution, projectName, documentName, name, DataCollector.Mapping.Structs[name]);
+            }
+
+            return solution;
+        }
     }
 }

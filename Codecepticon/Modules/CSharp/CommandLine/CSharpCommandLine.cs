@@ -129,6 +129,9 @@ namespace Codecepticon.Modules.CSharp.CommandLine
                             case "o":
                                 CommandLineData.CSharp.Rename.CommandLine = true;
                                 break;
+                            case "s":
+                                CommandLineData.CSharp.Rename.Structs = true;
+                                break;
                         }
                     }
                     break;
@@ -145,6 +148,7 @@ namespace Codecepticon.Modules.CSharp.CommandLine
             CommandLineData.CSharp.Rename.Variables = value;
             CommandLineData.CSharp.Rename.Parameters = value;
             CommandLineData.CSharp.Rename.CommandLine = value;
+            CommandLineData.CSharp.Rename.Structs = value;
         }
     }
 }

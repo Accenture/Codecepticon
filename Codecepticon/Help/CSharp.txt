@@ -8,8 +8,11 @@ Usage: Codecepticon.exe --module [csharp|cs] [OPTIONS]...
 --build                         Whether to build the project upon completion.
 --build-path [path]             Path to a directory where the solution will be compiled to. Only works with --build.
 --profile [name]                Name of an application-specific profile to use. Supported profiles are:
+                                - certify
                                 - rubeus
                                 - seatbelt
+                                - sharpchrome
+                                - sharpdpapi
                                 - sharphound
                                 - sharpview
 
@@ -22,6 +25,7 @@ Usage: Codecepticon.exe --module [csharp|cs] [OPTIONS]...
                                 - p     Properties
                                 - a     Parameters
                                 - v     Variables
+                                - s     Structs
                                 - o     Command Line
 %%_SHARED_%%
 

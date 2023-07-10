@@ -23,6 +23,7 @@ namespace Codecepticon.Modules.CSharp
         public static List<string> AllProperties = new List<string>();
         public static List<string> AllVariables = new List<string>();
         public static List<string> AllParameters = new List<string>();
+        public static List<string> AllStructs = new List<string>();
 
         public struct CommandLine
         {
@@ -41,6 +42,7 @@ namespace Codecepticon.Modules.CSharp
             public Dictionary<string, string> Properties;
             public Dictionary<string, string> Variables;
             public Dictionary<string, string> Parameters;
+            public Dictionary<string, string> Structs;
             public Dictionary<string, CommandLine> CommandLine;
         }
 
@@ -52,7 +54,8 @@ namespace Codecepticon.Modules.CSharp
             Enums = new Dictionary<string, string>(),
             Properties = new Dictionary<string, string>(),
             Variables = new Dictionary<string, string>(),
-            Parameters = new Dictionary<string, string>()
+            Parameters = new Dictionary<string, string>(),
+            Structs = new Dictionary<string, string>(),
         };
 
         public static bool IsMappingUnique(string name)
@@ -88,6 +91,12 @@ namespace Codecepticon.Modules.CSharp
             }
 
             item = Mapping.Variables.FirstOrDefault(s => s.Value == name).Key;
+            if (item != null)
+            {
+                return false;
+            }
+
+            item = Mapping.Structs.FirstOrDefault(s => s.Value == name).Key;
             if (item != null)
             {
                 return false;
@@ -192,6 +201,24 @@ namespace Codecepticon.Modules.CSharp
                     continue;
                 }
                 AllParameters.Add(name);
+            }
+        }
+
+        public static async Task CollectStructs(Solution solution, string projectName, string documentName)
+        {
+            Document document = VisualStudioManager.GetDocumentByName(solution, projectName, documentName);
+            
+            SyntaxTree syntaxTree = await document.GetSyntaxTreeAsync();
+            var structs = syntaxTree.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>();
+
+            foreach (var s in structs)
+            {
+                string name = s.Identifier.ToString();
+                if (AllStructs.Contains(name))
+                {
+                    continue;
+                }
+                AllStructs.Add(name);
             }
         }
 

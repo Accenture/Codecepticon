@@ -67,6 +67,7 @@ namespace Codecepticon.CommandLine
             public bool Variables;
             public bool Parameters;
             public bool CommandLine;
+            public bool Structs;
         }
 
         public struct RewriteTemplateStruct
