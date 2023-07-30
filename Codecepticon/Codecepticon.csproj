@@ -9,7 +9,7 @@
 	<LangVersion>9.0</LangVersion>
 	<PackageId>Codecepticon</PackageId>
 	<Title>Codecepticon</Title>
-	<Version>1.2.1</Version>
+	<Version>1.2.2</Version>
 	<Authors>Pavel Tsakalidis</Authors>
 	<Company>Accenture Security</Company>
 	<Product>Codecepticon</Product>
@@ -57,7 +57,6 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.2" />
-    <PackageReference Include="BouncyCastle" Version="1.8.9" />
     <PackageReference Include="Microsoft.Build" Version="17.3.1" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.5.3" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />

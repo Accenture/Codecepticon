@@ -1,5 +1,9 @@
 # Codecepticon Changelog
 
+## v1.2.2
+
+* `[Update]` Removed `BouncyCastle` dependency, now certificates are generated using native .NET functionality.
+
 ## v1.2.1
 
 * `[New]` C#: Added support for renaming Structs.
