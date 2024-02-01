@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This repo is unmaintained, visit https://github.com/sadreck/Codecepticon for the latest version.
+
 # Codecepticon ![version](https://img.shields.io/github/v/tag/Accenture/Codecepticon?label=version&style=flat-square)
 
 ## Table of Contents
